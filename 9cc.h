@@ -10,9 +10,10 @@
 //
 
 typedef enum {
-  TK_RESERVED, // Keywords or punctuators
-  TK_NUM,      // Integer literals
-  TK_EOF,      // End-of-file markers
+  TK_RESERVED, // 記号
+  TK_IDENT, // 識別子
+  TK_NUM,      // 整数トークン
+  TK_EOF,      // 入力の終わりを表すトークン
 } TokenKind;
 
 // Token type
@@ -50,6 +51,7 @@ typedef enum {
   ND_NE,  // !=
   ND_LT,  // <
   ND_LE,  // <=
+  ND_LVAR,// local variable
   ND_NUM, // Integer
 } NodeKind;
 
@@ -60,6 +62,7 @@ struct Node {
   Node *lhs;     // Left-hand side
   Node *rhs;     // Right-hand side
   int val;       // Used if kind == ND_NUM
+  int offset;    // Used if kind == ND_LVAR
 };
 
 Node *expr();
