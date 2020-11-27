@@ -19,16 +19,17 @@ Node *new_num(int val) {
   return node;
 }
 
-void program();
 Node *stmt();
 Node *expr();
-Node assign();
+Node *assign();
 Node *equality();
 Node *relational();
 Node *add();
 Node *mul();
 Node *unary();
 Node *primary();
+
+Node *code[100];
 
 // program = stmt*
 void program() {
@@ -50,11 +51,11 @@ Node *expr() {
   return assign();
 }
 
-// equality ("=" assign)?
+// assign = equality ("=" assign)?
 Node *assign() {
   Node *node = equality();
   if (consume("="))
-    node = new_binary(ND_EQ, node, assign());
+    node = new_binary(ND_ASSIGN, node, assign());
   return node;
 }
 
