@@ -71,6 +71,23 @@ bool at_eof() {
   return token->kind == TK_EOF;
 }
 
+bool is_alpha(char p) {
+  if ('a' <= p && p <= 'z') {
+    return true;
+  }
+  return false;
+}
+
+bool is_alphanum(char p) {
+  if (is_alpha(p)) {
+    return true;
+  }
+  if ('1' <= p && p <= '9') {
+    return true;
+  }
+  return false;
+}
+
 // 新しいトークンを作成してcurに繋げる
 Token *new_token(TokenKind kind, Token *cur, char *str, int len) {
   Token *tok = calloc(1, sizeof(Token));
@@ -111,13 +128,17 @@ Token *tokenize() {
 
     // single-letter punctuator
     if (strchr("+-*/()<>=;", *p)) {
+      char *q = p;
       cur = new_token(TK_RESERVED, cur, p++, 1);
       continue;
     }
 
-    if ('a' <= *p && *p <= 'z') {
-      cur = new_token(TK_IDENT, cur, p++, 1);
-      cur->len = 1;
+    if (is_alpha(*p)) {
+      char *q = p;
+      p++;
+      while(is_alphanum(*p))
+	p++;
+      cur = new_token(TK_IDENT, cur, q, p - q);
       continue;
     }
 
